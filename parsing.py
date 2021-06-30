@@ -6,6 +6,7 @@ import sqlite3 as sq
 
 URL = 'https://www.gismeteo.by/'
 URL1 = 'https://pogoda.by/'
+URL2 = 'https://yandex.by/pogoda/'
 HEADERS = {
 
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.41 YaBrowser/21.5.0.579 Yowser/2.5 Safari/537.36',
@@ -61,23 +62,62 @@ def get_content(html):
                         strip=True)
             }
         )
-
     return list_
+
+def get_content2(html2):
+    soup = BeautifulSoup(html2, 'html.parser')
+    items = soup.find_all('div', class_='b-page__container')
+    list_2 = []
+    for item in items:
+        list_2.append(
+            {
+                'Температура сейчас': item.find('div', class_='content content_compressed i-bem').find(
+                     'div', class_='fact__temp-wrap').find('div',
+                                                           class_='temp fact__temp fact__temp_size_s').get_text(
+                      strip=True)
+
+            }
+        )
+        list_2.append(
+            {
+                'Температура сейчас': item.find('div', class_='content content_compressed i-bem').find(
+                     'div', class_='link__condition day-anchor i-bem').get_text(
+                      strip=True)
+
+            }
+        )
+    return list_2
+
 
 
 def makeRequest():
-    html = get_html(URL)
-    html1 = get_html(URL1)
+    html = get_html(URL)              #gismetio
+    html1 = get_html(URL1)              #pogoda.by
+    html2 = get_html(URL2)                  #yandex.by
     gis = (get_content(html.text))
     temp = (gis[0]['Температура сейчас'])
-    print('GISMETIO:', *get_content(html.text))
+    yan = get_content2(html2.text)
+    #print('GISMETIO:', *get_content(html.text))
+    yan_temp = (yan[0]['Температура сейчас'])
     l1 = (get_content1(html1.text))
-    print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *l1))
+    #print(('POGODA.BY:', get_content1(html1.text))[1][0])
+    #print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *l1))
+    pog_temp = re.findall(r"\d{2}[.].", *l1)
+    print(*l1)
+    print(pog_temp)
+    # b = dict(a)
+    # print(b)
     gis_ = (re.findall(r"\d\d", str(*gis)))[0]
 
-    # print(gis_)
+    #print(gis_)
     # print(float(gis_))
-    return temp
+    return temp, yan_temp, pog_temp
+
+
+
+
+
+
 
 #makeRequest()
 
