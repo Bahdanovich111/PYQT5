@@ -82,6 +82,12 @@ class Ui_Form(QWidget):
                                    "background-color: #1d1c21;\n"
                                    "border: none\n"
                                    "")
+
+        self.dateEdit = QtWidgets.QDateEdit(Pogoda)
+        self.dateEdit.setGeometry(QtCore.QRect(10, 10, 110, 22))
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setDate(QtCore.QDate.currentDate())
+        self.dateEdit.setObjectName("dateEdit")
         # self.label_4.setWordWrap(False)
         #self.sity.setObjectName("label_4")
 

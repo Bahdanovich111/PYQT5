@@ -95,23 +95,18 @@ def makeRequest():
     html1 = get_html(URL1)              #pogoda.by
     html2 = get_html(URL2)                  #yandex.by
     gis = (get_content(html.text))
-    temp = (gis[0]['Температура сейчас'])
+    gis_temp = (gis[0]['Температура сейчас'])
     yan = get_content2(html2.text)
-    #print('GISMETIO:', *get_content(html.text))
+    print('GISMETIO:', *get_content(html.text))
     yan_temp = (yan[0]['Температура сейчас'])
     l1 = (get_content1(html1.text))
     #print(('POGODA.BY:', get_content1(html1.text))[1][0])
-    #print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *l1))
+    print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *l1))
     pog_temp = re.findall(r"\d{2}[.].", *l1)
     print(*l1)
     print(pog_temp)
-    # b = dict(a)
-    # print(b)
-    gis_ = (re.findall(r"\d\d", str(*gis)))[0]
 
-    #print(gis_)
-    # print(float(gis_))
-    return temp, yan_temp, pog_temp
+    return gis_temp, yan_temp, pog_temp
 
 
 
