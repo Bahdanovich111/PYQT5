@@ -30,39 +30,50 @@ def get_html(url, params=''):
 def get_content1(html1):
     soup = BeautifulSoup(html1, 'html.parser')
     items = soup.find_all('div', style='background: url(tpl/img/downpanel.gif) bottom repeat-x;')
-    #print(items)
+    # print(items)
     list_1 = []
     for item in items:
         list_1.append(
 
-                item.find('table', class_='src').find('td', valign="top").find('p').get_text(strip=True)
-
+            item.find('table', class_='src').find('td', valign="top").find('p').get_text(strip=True)
 
         )
-    #print(list_1)
+    # print(list_1)
     return list_1
-
 
 
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
-    items = soup.find_all('div', class_='wn_body')
+    items = soup.find_all('div', class_='weather_now')
+    # print(items)
     list_ = []
     for item in items:
         list_.append(
             {
-                'Температура сейчас': item.find('div', class_='info_item _main clearfix').find('div',
-                                                                                               class_='ii _temp').find(
+                'Температура сейчас': item.find(
                     'div', class_='js_meas_container temperature').find('span',
                                                                         class_='value unit unit_temperature_c').get_text(
                     strip=True),
-                'Скорость ветра':
+
+            }
+        )
+        list_.append(
+            {
+                'Ветер':
                     item.find('div', class_='information _attention').find_all('div', class_='info_item clearfix')[
                         1].find('div', class_='ii info_value').find('span', class_='unit unit_wind_m_s').get_text(
                         strip=True)
             }
         )
+        list_.append(
+            {
+                'Влажность':
+                    item.find('div', class_='information _additional opened').find_all('div', class_='ii info_value')[
+                        1].get_text(strip=True)
+            }
+        )
     return list_
+
 
 def get_content2(html2):
     soup = BeautifulSoup(html2, 'html.parser')
@@ -72,49 +83,59 @@ def get_content2(html2):
         list_2.append(
             {
                 'Температура сейчас': item.find('div', class_='content content_compressed i-bem').find(
-                     'div', class_='fact__temp-wrap').find('div',
-                                                           class_='temp fact__temp fact__temp_size_s').get_text(
-                      strip=True)
+                    'div', class_='fact__temp-wrap').find('div',
+                                                          class_='temp fact__temp fact__temp_size_s').find('span',
+                                                                                                           class_='temp__value temp__value_with-unit').get_text(
+                    strip=True)
 
             }
         )
         list_2.append(
             {
-                'Температура сейчас': item.find('div', class_='content content_compressed i-bem').find(
-                     'div', class_='link__condition day-anchor i-bem').get_text(
-                      strip=True)
+                'Ветер': item.find('div', class_='content content_compressed i-bem').find('div',
+                                                                                          class_='fact__props').find(
+                    'span', class_='wind-speed').get_text(
+                    strip=True)
+
+            }
+        )
+        list_2.append(
+            {
+                'Влажность': item.find('div', class_='content__top').find('div', class_='fact card card_size_big').find(
+                    'div', class_='fact__props').find('div', class_='term term_orient_v fact__humidity').find('div',
+                                                                                                              class_='term__value').get_text(
+                    strip=True)
 
             }
         )
     return list_2
 
 
-
 def makeRequest():
-    html = get_html(URL)              #gismetio
-    html1 = get_html(URL1)              #pogoda.by
-    html2 = get_html(URL2)                  #yandex.by
+    html = get_html(URL)  # gismetio
+    html1 = get_html(URL1)  # pogoda.by
+    html2 = get_html(URL2)  # yandex.by
     gis = (get_content(html.text))
     gis_temp = (gis[0]['Температура сейчас'])
+    gis_veter = (re.findall((r"\dм.с"), (gis[1]['Ветер'])))
+    gis_vlajnost = (gis[2]['Влажность'])
     yan = get_content2(html2.text)
+    print('Yandex:', get_content2(html2.text))
     print('GISMETIO:', *get_content(html.text))
     yan_temp = (yan[0]['Температура сейчас'])
-    l1 = (get_content1(html1.text))
-    #print(('POGODA.BY:', get_content1(html1.text))[1][0])
-    print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *l1))
-    pog_temp = re.findall(r"\d{2}[.].", *l1)
-    print(*l1)
+    yan_veter = yan[1]['Ветер']
+    yan_vlajnost = yan[2]['Влажность']
+    pog = (get_content1(html1.text))
+    print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *pog))
+    pog_temp = re.findall((r"\d{2}[.]."), *pog)
+    pog_veter = re.findall((r"\d.\d\sм.с"), *pog)
+    pog_vlajnost = re.findall((r"\d\d%"), *pog)
+    print(*pog)
     print(pog_temp)
 
-    return gis_temp, yan_temp, pog_temp
+    return gis_temp, gis_veter, gis_vlajnost, pog_temp, pog_veter, pog_vlajnost, yan_temp, yan_veter, yan_vlajnost
 
-
-
-
-
-
-
-#makeRequest()
+# makeRequest()
 
 # time = (datetime.datetime.now().strftime("%Y-%m-%d-%H.%M"))
 # # time = (datetime.datetime.now().strftime("%Y-%m-%d-%H.%M"))
