@@ -102,13 +102,16 @@ class Ui_Form(QWidget):
         # date = datetime.date.today()
         # self.date.setText(_translate("Form", f"   {datetime.date.today()}"))
         rt = (parsing.makeRequest())
+        print(rt)
         self.gismet_value.setText(
             _translate("Form", f"{rt[0]}°C  ветер:{rt[1][0]}  влажность:{rt[2]}"))  # вытянуть gis_
         self.gismet_value.adjustSize()
-        self.pogoda_value.setText(_translate("Form", f"{rt[3][0]}°C  ветер:{rt[4][0]}  влажность:{rt[5][0]} "))
+        if rt[4] == True:
+            self.pogoda_value.setText(_translate("Form", f"{rt[3][0]}°C  ветер:{rt[4][0]}  влажность:{rt[5][0]} "))
+        else:
+            self.pogoda_value.setText(_translate("Form", f"{rt[3][0]}°C  ветер: штиль  влажность:{rt[5][0]} "))
         self.pogoda_value.adjustSize()
         # rt = parsing.makeRequest()
-        print(rt)
         # self.label_2.setText()
         self.gismet.setText(_translate("Form", "GISMETIO"))
         self.yandex_value.setText(_translate("Form", f"{rt[6]}°C  ветер:{rt[7]}м/с  влажность:{rt[8]}"))

@@ -11,7 +11,6 @@ class Example(QWidget):
 
         self.initUI()
 
-
     def initUI(self):
         self.label = QLabel(self)
         self.label.setPixmap(QPixmap("погода.png"))
@@ -26,22 +25,20 @@ class Example(QWidget):
         self.ok_button.clicked.connect(self.pus)
         self.show()
 
-
     def pus(self):
-        #app = QtWidgets.QApplication(sys.argv)
+        # app = QtWidgets.QApplication(sys.argv)
         global Pogoda
         Pogoda = QtWidgets.QWidget()
         ui = Ui_Form()
         ui.setupUi(Pogoda)
         ex.close()
         Pogoda.show()
-        #sys.exit(app.exec_())
+
+        # sys.exit(app.exec_())
 
         # self.setWindowIcon(QIcon('terminate.png'))
     # def tre(self):
     #     print('clicked')
-
-
 
     # def makeRequest(self):
     #     return True

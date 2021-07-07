@@ -38,7 +38,7 @@ def get_content1(html1):
             item.find('table', class_='src').find('td', valign="top").find('p').get_text(strip=True)
 
         )
-    # print(list_1)
+    print(list_1)
     return list_1
 
 
@@ -128,10 +128,8 @@ def makeRequest():
     pog = (get_content1(html1.text))
     print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *pog))
     pog_temp = re.findall((r"\d{2}[.]."), *pog)
-    pog_veter = re.findall((r"\d.\d\sм.с"), *pog)
+    pog_veter = (re.findall((r"\d.\d\sм.с"), *pog))
     pog_vlajnost = re.findall((r"\d\d%"), *pog)
-    print(*pog)
-    print(pog_temp)
 
     return gis_temp, gis_veter, gis_vlajnost, pog_temp, pog_veter, pog_vlajnost, yan_temp, yan_veter, yan_vlajnost
 
