@@ -1,4 +1,4 @@
-import requests, datetime
+import requests, time
 from bs4 import BeautifulSoup
 import re
 
@@ -38,7 +38,7 @@ def get_content1(html1):
             item.find('table', class_='src').find('td', valign="top").find('p').get_text(strip=True)
 
         )
-    print(list_1)
+    # print(list_1)
     return list_1
 
 
@@ -101,9 +101,8 @@ def get_content2(html2):
         )
         list_2.append(
             {
-                'Влажность': item.find('div', class_='content__top').find('div', class_='fact card card_size_big').find(
-                    'div', class_='fact__props').find('div', class_='term term_orient_v fact__humidity').find('div',
-                                                                                                              class_='term__value').get_text(
+                'Влажность': item.find('div', class_='content__top').find(
+                    'div', class_='fact__props').find('div', class_='term term_orient_v fact__humidity').get_text(
                     strip=True)
 
             }
@@ -120,13 +119,13 @@ def makeRequest():
     gis_veter = (re.findall((r"\dм.с"), (gis[1]['Ветер'])))
     gis_vlajnost = (gis[2]['Влажность'])
     yan = get_content2(html2.text)
-    print('Yandex:', get_content2(html2.text))
-    print('GISMETIO:', *get_content(html.text))
+    # print('Yandex:', get_content2(html2.text))
+    # print('GISMETIO:', *get_content(html.text))
     yan_temp = (yan[0]['Температура сейчас'])
     yan_veter = yan[1]['Ветер']
     yan_vlajnost = yan[2]['Влажность']
     pog = (get_content1(html1.text))
-    print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *pog))
+    # print('POGODA.BY:', re.findall(r"\w{11}\b.+\w\/\w", *pog))
     pog_temp = re.findall((r"\d{2}[.]."), *pog)
     pog_veter = (re.findall((r"\d.\d\sм.с"), *pog))
     pog_vlajnost = re.findall((r"\d\d%"), *pog)
