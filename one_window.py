@@ -34,14 +34,10 @@ class Example(QWidget):
         ex.close()
         Pogoda.show()
 
-        # sys.exit(app.exec_())
 
-        # self.setWindowIcon(QIcon('terminate.png'))
-    # def tre(self):
-    #     print('clicked')
 
-    # def makeRequest(self):
-    #     return True
+
+
 
 
 if __name__ == '__main__':
