@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox, QPushButto
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 
 
-class Example(QWidget):
+class Weather(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -42,6 +42,6 @@ class Example(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
+    ex = Weather()
     sys.exit(app.exec_())
 
